@@ -12,9 +12,14 @@ app.use(function (req, res, next) {
 });
 app.use(express.static(__dirname + '/public'));
 
+// add logger on get or post
+app.use(function (req, res, next) {
+    console.log(req.method, req.url);
+    next();
+});
+
 app.post('/player/login/dashboard', function (req, res) {
     res.sendFile(__dirname + '/public/html/dashboard.html');
-    res.end();
 });
 
 app.get('/player/login/dashboard', function (req, res) {
