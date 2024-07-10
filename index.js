@@ -13,8 +13,16 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname + '/public'));
 
 app.post('/player/login/dashboard', function (req, res) {
-    res.send(fs.readFileSync(__dirname + '/public/html/dashboard.html'));
+    res.sendFile(__dirname + '/public/html/dashboard.html');
     res.end();
+});
+
+app.get('/player/login/dashboard', function (req, res) {
+    res.sendFile(__dirname + '/public/html/dashboard.html');
+});
+
+app.get('/', function (req, res) {
+    res.send('Hello World!');
 });
 
 app.listen(5000, function () {
