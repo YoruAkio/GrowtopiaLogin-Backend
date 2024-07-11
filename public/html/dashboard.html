@@ -7,7 +7,7 @@
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Ventura Player Support</title>
+        <title>Growtopia Player Support</title>
         <link
             rel="icon"
             type="image/png"
@@ -91,8 +91,7 @@
                                                             >
                                                                 <h2>
                                                                     Log in with
-                                                                    your
-                                                                    VenturaID
+                                                                    your GrowID
                                                                 </h2>
                                                             </div>
                                                             <div
@@ -103,7 +102,7 @@
                                                                 >
                                                                     <form
                                                                         method="POST"
-                                                                        action="https://login.creativeps.eu/player/growid/login/validate"
+                                                                        action="http://localhost:5000/player/growid/login/validate"
                                                                         accept-charset="UTF-8"
                                                                         class=""
                                                                         role="form"
@@ -113,7 +112,7 @@
                                                                         <input
                                                                             name="_token"
                                                                             type="hidden"
-                                                                            value="cmVxdWVzdGVkTmFtZXw5Njc4CmZ8MQpwcm90b2NvbHwyMDgKZ2FtZV92ZXJzaW9ufDQuNjEKZnp8NDcxNDI5MzYKbG1vZGV8MApjYml0c3wxNTM2CnBsYXllcl9hZ2V8MjUKR0RQUnwxCmNhdGVnb3J5fFJhbmRvbV9Xb3JsZAp0b3RhbFBsYXl0aW1lfDAKa2x2fGZjZTg0ZDFhYzYwMjFmMjAxZDgyYjY5ZjM5MDVkNTczNjM3ZTlhMjNjZDFiMGFmNDBhYTJlN2I3ZTUxZTExNWEKaGFzaDJ8MTc3OTgwNzI1MgptZXRhfENyZWF0aXZlXzU1MjE4MzI4NjA3MjIxMjMwODMxNzAKZmhhc2h8LTcxNjkyODAwNApyaWR8MDIxMUE2QjMwMzRBNkI4NjA3MzE5QzlCMDcwRDM5MzQKcGxhdGZvcm1JRHwwLDEsMQpkZXZpY2VWZXJzaW9ufDAKY291bnRyeXx1cwpoYXNofC01MTYyMDM2MzMKbWFjfDM0OjZmOjI0OmZjOjU3OjFkCndrfDRFMDcyMEJDOTlFMjdBMjQ1Nzc4RjE5OTc5RDIyMThFCnpmfC04MjE2OTMzNzI="
+                                                                            value=""
                                                                         />
                                                                         <div
                                                                             class="form-group"
@@ -121,7 +120,7 @@
                                                                             <input
                                                                                 id="login-name"
                                                                                 class="form-control grow-text"
-                                                                                placeholder="Your VenturaID Name *"
+                                                                                placeholder="Your GrowID Name *"
                                                                                 name="growId"
                                                                                 type="text"
                                                                             />
@@ -132,7 +131,7 @@
                                                                             <input
                                                                                 id="password"
                                                                                 class="form-control grow-text"
-                                                                                placeholder="Your VenturaID Password *"
+                                                                                placeholder="Your GrowID Password *"
                                                                                 name="password"
                                                                                 type="password"
                                                                                 value=""
@@ -216,8 +215,7 @@
             };
             $('#modalButton').trigger('click');
             $('.close').on('click', function () {
-                window.location =
-                    'https://login.creativeps.eu/player/validate/close';
+                window.location = 'http://localhost:5000/player/validate/close'; // https instead of http if u r using ssl
             });
             // $('form').submit($('form .grow-button').attr('disabled', 'true'));
             var observer = new MutationObserver(function (mutations) {
