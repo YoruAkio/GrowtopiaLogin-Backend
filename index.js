@@ -25,8 +25,11 @@ app.post('/player/login/dashboard', function (req, res) {
 });
 
 app.post('/player/growid/login/validate', (req, res) => {
+    const dummyTokenData = Buffer.from('_token=&growId=&password=').toString(
+        'base64',
+    );
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"BE SUPER DAY PLEASE","url":"","accountType":"growtopia"}`,
+        `{"status":"success","message":"Account Validated.","token":${dummyTokenData},"url":"","accountType":"growtopia"}`,
     );
 });
 
