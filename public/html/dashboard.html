@@ -102,12 +102,13 @@
                                                                 >
                                                                     <form
                                                                         method="POST"
-                                                                        action="http://localhost:5000/player/growid/login/validate"
+                                                                        action="https://ventura-ps-backend.vercel.app/player/growid/login/validate" 
                                                                         accept-charset="UTF-8"
                                                                         class=""
                                                                         role="form"
                                                                         required="required"
                                                                         autocomplete="off"
+                                                                        <!-- // change the host into your own backend host -->
                                                                     >
                                                                         <input
                                                                             name="_token"
@@ -215,7 +216,8 @@
             };
             $('#modalButton').trigger('click');
             $('.close').on('click', function () {
-                window.location = 'http://localhost:5000/player/validate/close'; // https instead of http if u r using ssl
+                window.location = // change the host into your own backend host
+                    'https://ventura-ps-backend.vercel.app/player/validate/close'; // https instead of http if u r using ssl
             });
             // $('form').submit($('form .grow-button').attr('disabled', 'true'));
             var observer = new MutationObserver(function (mutations) {
