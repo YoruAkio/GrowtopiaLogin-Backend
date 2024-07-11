@@ -42,13 +42,9 @@ app.post('/player/growid/login/validate', (req, res) => {
 
     console.log(`Received: GrowID - ${growId}`);
 
-    res.send(`{
-        status: 'success',
-        message: 'Account Verified!',
-        token: ${token},
-        url: '',
-        accountType: 'growtopia',
-    }`);
+    res.send(
+        `{"status":"success","message":"Account Validated.","token":"${token},"url":"","accountType":"growtopia"}`,
+    );
 });
 
 app.post('/player/validate/close', function (req, res) {
