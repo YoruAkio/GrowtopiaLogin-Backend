@@ -23,6 +23,10 @@ app.post('/player/login/dashboard', (req, res) => {
     res.sendFile(__dirname + '/public/html/dashboard.html');
 });
 
+app.post('/player/growid/login', (req, res) => {
+    res.redirect('/player/growid/login/validate');
+});
+
 app.post('/player/growid/login/validate', (req, res) => {
     const dummyTokenData = Buffer.from('_token=&growId=&password=').toString(
         'base64',
