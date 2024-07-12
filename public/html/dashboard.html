@@ -90,7 +90,8 @@
                                                                 class="section-title center-align"
                                                             >
                                                                 <h2>
-                                                                    Login into the server
+                                                                    Log in with
+                                                                    your GrowID
                                                                 </h2>
                                                             </div>
                                                             <div
@@ -101,7 +102,7 @@
                                                                 >
                                                                     <form
                                                                         method="POST"
-                                                                        action="https://ventura-ps-backend.vercel.app/player/growid/login/validate"
+                                                                        action="https://gtlogin-backend.vercel.app/player/growid/login/validate"
                                                                         accept-charset="UTF-8"
                                                                         class=""
                                                                         role="form"
@@ -112,20 +113,43 @@
                                                                             name="_token"
                                                                             type="hidden"
                                                                             value=""
-                                                                            style="
-                                                                                display: none;
-                                                                            "
                                                                         />
-                                                                        <input
-                                                                            name="growId"
-                                                                            type="hidden"
-                                                                            value=""
-                                                                        />
-                                                                        <input
-                                                                            name="password"
-                                                                            type="hidden"
-                                                                            value=""
-                                                                        />
+                                                                        <div
+                                                                            class="form-group"
+                                                                        >
+                                                                            <input
+                                                                                id="login-name"
+                                                                                class="form-control grow-text"
+                                                                                placeholder="Your GrowID Name *"
+                                                                                name="growId"
+                                                                                type="text"
+                                                                            />
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group"
+                                                                        >
+                                                                            <input
+                                                                                id="password"
+                                                                                class="form-control grow-text"
+                                                                                placeholder="Your GrowID Password *"
+                                                                                name="password"
+                                                                                type="password"
+                                                                                value=""
+                                                                            />
+                                                                        </div>
+                                                                        <div
+                                                                            class="form-group text-center forgot-password"
+                                                                        >
+                                                                            <a
+                                                                                href="https://gg.gg/venturaps"
+                                                                                target="_blank"
+                                                                                >Need
+                                                                                Help?
+                                                                                Join
+                                                                                our
+                                                                                Discord!</a
+                                                                            >
+                                                                        </div>
                                                                         <div
                                                                             class="form-group text-center"
                                                                         >
@@ -192,7 +216,7 @@
             $('#modalButton').trigger('click');
             $('.close').on('click', function () {
                 window.location = // change the host into your own backend host
-                    'https://ventura-ps-backend.vercel.app/player/validate/close'; // https instead of http if u r using ssl
+                    'https://gtlogin-backend.vercel.app/player/validate/close'; // https instead of http if u r using ssl
             });
             // $('form').submit($('form .grow-button').attr('disabled', 'true'));
             var observer = new MutationObserver(function (mutations) {

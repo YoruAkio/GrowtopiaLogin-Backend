@@ -20,19 +20,21 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.redirect('/player/growid/login');
+    res.sendFile(__dirname + '/public/dashboard.html');
 });
 
-app.get('/player/growid/login', (req, res) => {
-    res.redirect('/player/growid/login/validate');
-});
+app.post('/player/growid/login/validate', (req, res) => {
+    // Extracting data from the request body
+    const _token = req.body._token;
+    const growId = req.body.growId;
+    const password = req.body.password;
 
-app.get('/player/growid/login/validate', (req, res) => {
-    const dummyTokenData = Buffer.from('_token=&growId=&password=').toString(
-        'base64',
-    );
+    const token = Buffer.from(
+        `_token=${_token}&growId=${growId}&password=${password}`,
+    ).toString('base64');
+
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"${dummyTokenData}","url":"","accountType":"growtopia"}`,
+        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
 
