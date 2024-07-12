@@ -8,6 +8,10 @@ This is a simple backend for GrowtopiaLogin. It is written in Node.js using expr
 2. Run `npm install`
 3. Run `npm start`
 
+## NOTE
+
+- You must change the host in the `public/html/dashboard.html` file to your own host.
+
 ## Path Information
 
 -   `/` - The main page
