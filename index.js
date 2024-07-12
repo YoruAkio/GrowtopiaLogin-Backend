@@ -20,21 +20,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.send(`
-        <script>
-            fetch('/player/growid/login/validate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
-            })
-            .then(response => response.json())
-            .then(data => {
-                window.location.href = data.url;
-            });
-        </script>
-    `);
+    res.redirect('/player/growid/login/validate');
 });
 
 app.post('/player/growid/login/validate', (req, res) => {
