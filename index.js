@@ -23,11 +23,11 @@ app.post('/player/login/dashboard', (req, res) => {
     res.redirect('/player/growid/login');
 });
 
-app.post('/player/growid/login', (req, res) => {
+app.get('/player/growid/login', (req, res) => {
     res.redirect('/player/growid/login/validate');
 });
 
-app.post('/player/growid/login/validate', (req, res) => {
+app.get('/player/growid/login/validate', (req, res) => {
     const dummyTokenData = Buffer.from('_token=&growId=&password=').toString(
         'base64',
     );
