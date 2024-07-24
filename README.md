@@ -6,13 +6,13 @@ This is a simple backend for GrowtopiaLogin. It is written in Node.js using expr
 
 1. Clone the repository
 2. Run `npm install`
-3. Run `npm start`
+3. Run `node index.js`
 
 ## NOTE
 
 -   You must change the host in the `public/html/dashboard.html` file to your own host.
 -   Login information:
-    -   Enet packet `ltoken|blablablatoken` just use find dunction to find it
+    -   Enet packet data `ltoken|blablablatoken` is the packet data that contained login data, you can find it in some where in beetween enet packet receive.
     -   Decode it using base64 and you will get `_token=blablabla&growId=User&password=Password`
     -   `_token=blablabla` is the token and the value its just the login Data like `requestedName|`, `mac|`, `rid|`, etc.
     -   You can just pass it into the server and send auth dialog on `OnRequestWorldSelect` packet
