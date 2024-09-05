@@ -2,6 +2,12 @@
 
 This is a simple backend for GrowtopiaLogin. It is written in Node.js using expresjs.
 
+## Hosting
+
+You can host your own page by clicking this button
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/yoruakio/GrowtopiaLogin-Backend)
+
 ## Installation
 
 1. Clone the repository
