@@ -24,7 +24,6 @@ app.post('/player/login/dashboard', (req, res) => {
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
-    // Extracting data from the request body
     const _token = req.body._token;
     const growId = req.body.growId;
     const password = req.body.password;
