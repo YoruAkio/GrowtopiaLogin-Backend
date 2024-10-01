@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.sendFile(__dirname + '/public/html/dashboard.html');
+    res.status(302).redirect('/player/growid/login/validate');
 });
 
 app.post('/player/growid/login/validate', (req, res) => {
