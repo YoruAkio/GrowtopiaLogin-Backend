@@ -23,7 +23,7 @@ app.post('/player/login/dashboard', (req, res) => {
     res.status(302).redirect('/player/growid/login/validate');
 });
 
-app.post('/player/growid/login/validate', (req, res) => {
+app.all('/player/growid/login/validate', (req, res) => {
     // Extracting data from the request body
     const _token = req.body._token;
     const growId = req.body.growId;
