@@ -20,7 +20,6 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.send("{'status':'success','message':'Logged in successfully.','url':'/player/dashboard'}");
     res.status(302).redirect('/player/growid/login/validate');
 });
 
