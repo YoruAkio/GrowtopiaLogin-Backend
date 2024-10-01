@@ -20,10 +20,10 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.status(302).redirect('/player/growid/login/validate');
+    res.sendFile(__dirname + '/public/html/dashboard.html');
 });
 
-app.post('/player/growid/login/validate', (req, res) => {
+app.all('/player/growid/login/validate', (req, res) => {
     // Extracting data from the request body
     const _token = req.body._token;
     const growId = req.body.growId;
