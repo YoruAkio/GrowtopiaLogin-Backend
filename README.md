@@ -6,7 +6,7 @@ This is a simple backend for GrowtopiaLogin. It is written in Node.js using expr
 
 Tutorial:
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/8OXt1tHmeAM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+[![Tutorial Videos](http://img.youtube.com/vi/8OXt1tHmeAM/0.jpg)](http://www.youtube.com/watch?v=8OXt1tHmeAM)
 
 ## Path Information
 
