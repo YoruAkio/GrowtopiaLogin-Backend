@@ -1,7 +1,19 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const rateLimiter = require('express-rate-limit');
+const compression = require('compression');
 
+app.use(compression({
+    level: 9,
+    threshold: 0,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    }
+}));
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
@@ -11,12 +23,11 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
 app.use(function (req, res, next) {
     console.log(req.method, req.url);
     next();
 });
-
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
