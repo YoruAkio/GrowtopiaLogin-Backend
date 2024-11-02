@@ -2,6 +2,18 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const rateLimiter = require('express-rate-limit');
+const compression = require('compression');
+
+app.use(compression({
+    level: 9,
+    threshold: 0,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    }
+}));
 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');

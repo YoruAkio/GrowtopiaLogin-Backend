@@ -18,6 +18,7 @@
     "homepage": "https://github.com/YoruAkio/GrowtopiaLogin-Backend#readme",
     "dependencies": {
         "body-parser": "^1.20.2",
+        "compression": "^1.7.5",
         "express": "^4.19.2",
         "express-rate-limit": "^7.4.0"
     }
