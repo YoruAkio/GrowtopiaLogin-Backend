@@ -5,7 +5,7 @@ const rateLimiter = require('express-rate-limit');
 const compression = require('compression');
 
 app.use(compression({
-    level: 9,
+    level: 5,
     threshold: 0,
     filter: (req, res) => {
         if (req.headers['x-no-compression']) {
@@ -31,11 +31,20 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 app.post('/player/login/dashboard', (req, res) => {
-    res.status(302).redirect('/player/growid/login/validate');
+    const tData = {};
+    let encData = "";
+    try {
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); const uName = uData[0].split('|'); const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { const d = uData[i].split('|'); tData[d[0]] = d[1]; }
+        encData = Buffer.from(JSON.stringify(tData)).toString('base64');
+        if (uName[1] && uPass[1]) { res.status(302).redirect(`/player/growid/login/validate?token=${encData}`); }
+    } catch (why) { console.log(`Warning: ${why}`); }
+
+    res.status(302).redirect(`/player/growid/login/validate?token=${encData}`);
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
-    const _token = req.body._token;
+    const _token = req.query.token;
     const growId = req.body.growId;
     const password = req.body.password;
 
@@ -46,10 +55,6 @@ app.all('/player/growid/login/validate', (req, res) => {
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
-});
-
-app.post('/player/validate/close', function (req, res) {
-    res.send('<script>window.close();</script>');
 });
 
 app.get('/', function (req, res) {
