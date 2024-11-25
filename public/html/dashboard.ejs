@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Growtopia - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="flex flex-col items-center justify-center h-screen bg-[#e0f7fa]">
+    <div class="fixed inset-0 flex items-center justify-center">
+        <div class="relative bg-[#2b4d6d] border-4 border-[#87b8cc] shadow-lg p-6 w-80 rounded-lg">
+            <p class="text-white text-center font-bold text-2xl">Login</p>
+            <div id="errorDiv" class="hidden flex flex-col mt-2 text-xs text-red-700 font-bold px-[5px] bg-[#2b4d6d] rounded">
+                <a id="errorMessage"></a>
+            </div>
+            <form 
+            method="post"
+            action="/player/growid/login/validate"
+            accept-charset="UTF-8"
+            id="loginForm" class="mt-3">
+                <div class="mb-1">
+                    <input name="type" value="log" type="hidden" />
+                    <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+                    <label for="loginGrowId" class="block text-white text-xs">GrowID</label>
+                    <div class="flex items-center border-2 border-[#81d4fa] rounded bg-[#2b4d6d] px-1 py-1">
+                        <i class="fas fa-user text-white mr-1 text-xs"></i>
+                        <input type="text" name="growId" id="loginGrowId" class="w-full bg-[#2b4d6d] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your growid">
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <label for="loginPassword" class="block text-white text-xs">Password</label>
+                    <div class="flex items-center border-2 border-[#81d4fa] rounded bg-[#2b4d6d] px-1 py-1">
+                        <i class="fas fa-lock text-white mr-1 text-xs"></i>
+                        <input type="password" name="password" id="loginPassword" class="w-full bg-[#2b4d6d] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your password">
+                        <button type="button" id="toggleLogPassword" class="text-white ml-2 focus:outline-none text-xs">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex justify-end items-center">
+                    <button id="loginButton" class="px-2 py-1 rounded bg-[#00b8ff] text-white text-xs hover:bg-[#06a4dd] transition duration-300 ease-in-out transform hover:scale-105">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (localStorage.getItem('growId')) {
+                document.getElementById('loginGrowId').value = localStorage.getItem('growId');
+            }
+
+            const loginGrowId = document.getElementById('loginGrowId').value
+            const loginPassword = document.getElementById('loginPassword').value
+        });
+        document.getElementById('loginButton').addEventListener('click', function (event) {
+            event.preventDefault();
+
+            const loginForm = document.getElementById('loginForm');
+            const uName = document.getElementById('loginGrowId').value;
+            const uPass = document.getElementById('loginPassword').value;
+
+            if (!uName || !uPass) {
+                document.getElementById('errorDiv').classList.remove('hidden');
+                document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
+                return;
+            } else if (uName.length < 4 || uPass.length < 4) {
+                document.getElementById('errorDiv').classList.remove('hidden');
+                document.getElementById('errorMessage').innerHTML = 'Username or Password must be at least 4 characters long';
+                return;
+            } else {
+                loginForm.submit();
+                localStorage.setItem('growId', document.getElementById('loginGrowId').value);
+            }
+        })
+        document.getElementById('toggleLogPassword').addEventListener('click', function () {
+            const LpasswordField = document.getElementById('loginPassword')
+            const LpasswordFieldType = LpasswordField.getAttribute('type');
+            if (LpasswordFieldType === 'password') {
+                LpasswordField.setAttribute('type', 'text');
+                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                LpasswordField.setAttribute('type', 'password');
+                this.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        });
+    </script>
+</body>
+</html>
