@@ -53,17 +53,11 @@ app.all('/player/growid/login/validate', (req, res) => {
         `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia"}`,
     );
 });
-app.all('/player/growid/checktoken', (req, res) => {
-    const refreshToken = req.body;
-    let data = {
-        status: "success",
-        message: "Account Validated",
-        token = refreshToken,
-        url: "",
-        accountType: "growtopia"
-    };
-    res.send(data);
+
+app.all('/player/*', function (req, res) {
+    res.status(301).redirect('https://api.yoruakio.tech/player/' + req.path.slice(8));
 });
+
 app.get('/', function (req, res) {
     res.send('Hello World!');
 });
