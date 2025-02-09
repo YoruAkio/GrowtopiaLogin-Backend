@@ -195,25 +195,61 @@
         });
 
         document.getElementById('loginButton').addEventListener('click', function (event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            const loginForm = document.getElementById('loginForm');
-            const uName = document.getElementById('loginGrowId').value;
-            const uPass = document.getElementById('loginPassword').value;
+    const loginForm = document.getElementById('loginForm');
+    const uName = document.getElementById('loginGrowId').value;
+    const uPass = document.getElementById('loginPassword').value;
 
-            if (!uName || !uPass) {
-                document.getElementById('errorDiv').classList.remove('hidden');
-                document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
-                return;
-            } else if (uName.length < 2 || uPass.length < 7) {
-                document.getElementById('errorDiv').classList.remove('hidden');
-                document.getElementById('errorMessage').innerHTML = 'Username Atleast 2 and Password must be at least 7 characters long';
-                return;
-            } else {
-                loginForm.submit();
-                localStorage.setItem('growId', document.getElementById('loginGrowId').value);
-            }
-        });
+    // Validate inputs
+    if (!uName || !uPass) {
+        document.getElementById('errorDiv').classList.remove('hidden');
+        document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
+        return;
+    } else if (uName.length < 2 || uPass.length < 7) {
+        document.getElementById('errorDiv').classList.remove('hidden');
+        document.getElementById('errorMessage').innerHTML = 'Username must be at least 2 characters, and Password must be at least 7 characters long';
+        return;
+    }
+
+    // Prepare data for the backend
+    const data = {
+        growId: uName,
+        password: uPass,
+        _token: '{{tokenPlaceholder}}' // Replace this with your actual token if needed
+    };
+
+    // Send a POST request to the backend
+    fetch('/player/growid/login/validate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle the backend response
+        if (data.status === "success") {
+            console.log("Login successful:", data);
+
+            // Store the username in localStorage
+            localStorage.setItem('growId', uName);
+
+            // Redirect the user to the dashboard or another page
+            window.location.href = '/player/login/dashboard';
+        } else {
+            // Display an error message if login failed
+            document.getElementById('errorDiv').classList.remove('hidden');
+            document.getElementById('errorMessage').innerHTML = data.message || 'Login failed. Please try again.';
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        document.getElementById('errorDiv').classList.remove('hidden');
+        document.getElementById('errorMessage').innerHTML = 'An error occurred. Please try again.';
+    });
+});
 
 document.getElementById('createAccountButton').addEventListener('click', function (event) {
     event.preventDefault();
