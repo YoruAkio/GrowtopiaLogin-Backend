@@ -221,14 +221,36 @@ document.getElementById('createAccountButton').addEventListener('click', functio
     // Generate a random guest username
     const randomGuestName = 'Guest' + Math.floor(Math.random() * 100000);
 
-    // Set the generated username in the input field
-    document.getElementById('loginGrowId').value = randomGuestName;
-    
-    // Leave password empty to simulate auto-account creation
-    document.getElementById('loginPassword').value = 'test'; 
+    // Prepare the data to send to the backend
+    const data = {
+        growId: randomGuestName,
+        password: 'test', // Set a default password
+        _token: '{{tokenPlaceholder}}' // Make sure to replace this with your actual token if needed
+    };
 
-    // Submit the form to log the user in with the generated username
-    document.getElementById('loginForm').submit();
+    // Send a POST request to the backend to create the account
+    fetch('/player/growid/login/validate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Handle successful account creation
+        if (data.status === "success") {
+            // Redirect to the game or handle the response accordingly
+            console.log("Account created successfully:", data);
+            // You can redirect or perform other actions here
+        } else {
+            // Handle errors
+            console.error("Error creating account:", data.message);
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+    });
 });
 
 
