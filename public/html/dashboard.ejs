@@ -172,28 +172,15 @@
 
     <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/jquery/jquery-2.1.4.min.js"></script>
     <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/bootstrap/javascripts/bootstrap.min.js"></script>
-    <script>
+   <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (localStorage.getItem('growId')) {
                 document.getElementById('loginGrowId').value = localStorage.getItem('growId');
             }
 
-            const loginGrowId = document.getElementById('loginGrowId').value;
-            const loginPassword = document.getElementById('loginPassword').value;
-
-            $('#modalShow').modal({
-                backdrop: 'static',
-                keyboard: false,
-                show: true
-            });
-
-            $('#modalShow').on('hide.bs.modal', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                return false;
-            });
+            const loginGrowId = document.getElementById('loginGrowId').value
+            const loginPassword = document.getElementById('loginPassword').value
         });
-
         document.getElementById('loginButton').addEventListener('click', function (event) {
             event.preventDefault();
 
@@ -205,16 +192,26 @@
                 document.getElementById('errorDiv').classList.remove('hidden');
                 document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
                 return;
-            } else if (uName.length < 2 || uPass.length < 7) {
+            } else if (uName.length < 4 || uPass.length < 4) {
                 document.getElementById('errorDiv').classList.remove('hidden');
-                document.getElementById('errorMessage').innerHTML = 'Username Atleast 2 and Password must be at least 7 characters long';
+                document.getElementById('errorMessage').innerHTML = 'Username or Password must be at least 4 characters long';
                 return;
             } else {
                 loginForm.submit();
                 localStorage.setItem('growId', document.getElementById('loginGrowId').value);
             }
+        })
+        document.getElementById('toggleLogPassword').addEventListener('click', function () {
+            const LpasswordField = document.getElementById('loginPassword')
+            const LpasswordFieldType = LpasswordField.getAttribute('type');
+            if (LpasswordFieldType === 'password') {
+                LpasswordField.setAttribute('type', 'text');
+                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                LpasswordField.setAttribute('type', 'password');
+                this.innerHTML = '<i class="fas fa-eye"></i>';
+            }
         });
-
 document.getElementById('createAccountButton').addEventListener('click', function (event) {
     event.preventDefault();
 
@@ -230,20 +227,6 @@ document.getElementById('createAccountButton').addEventListener('click', functio
     // Submit the form to log the user in with the generated username
     document.getElementById('loginForm').submit();
 });
-
-
-
-        document.getElementById('toggleLogPassword').addEventListener('click', function () {
-            const LpasswordField = document.getElementById('loginPassword');
-            const LpasswordFieldType = LpasswordField.getAttribute('type');
-            if (LpasswordFieldType === 'password') {
-                LpasswordField.setAttribute('type', 'text');
-                this.innerHTML = '<i class="fas fa-eye-slash"></i>';
-            } else {
-                LpasswordField.setAttribute('type', 'password');
-                this.innerHTML = '<i class="fas fa-eye"></i>';
-            }
-        });
     </script>
 </body>
 </html>
