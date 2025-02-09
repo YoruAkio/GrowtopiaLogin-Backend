@@ -195,61 +195,25 @@
         });
 
         document.getElementById('loginButton').addEventListener('click', function (event) {
-    event.preventDefault();
+            event.preventDefault();
 
-    const loginForm = document.getElementById('loginForm');
-    const uName = document.getElementById('loginGrowId').value;
-    const uPass = document.getElementById('loginPassword').value;
+            const loginForm = document.getElementById('loginForm');
+            const uName = document.getElementById('loginGrowId').value;
+            const uPass = document.getElementById('loginPassword').value;
 
-    // Validate inputs
-    if (!uName || !uPass) {
-        document.getElementById('errorDiv').classList.remove('hidden');
-        document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
-        return;
-    } else if (uName.length < 2 || uPass.length < 7) {
-        document.getElementById('errorDiv').classList.remove('hidden');
-        document.getElementById('errorMessage').innerHTML = 'Username must be at least 2 characters, and Password must be at least 7 characters long';
-        return;
-    }
-
-    // Prepare data for the backend
-    const data = {
-        growId: uName,
-        password: uPass,
-        _token: '{{tokenPlaceholder}}' // Replace this with your actual token if needed
-    };
-
-    // Send a POST request to the backend
-    fetch('/player/growid/login/validate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle the backend response
-        if (data.status === "success") {
-            console.log("Login successful:", data);
-
-            // Store the username in localStorage
-            localStorage.setItem('growId', uName);
-
-            // Redirect the user to the dashboard or another page
-            window.location.href = '/player/login/dashboard';
-        } else {
-            // Display an error message if login failed
-            document.getElementById('errorDiv').classList.remove('hidden');
-            document.getElementById('errorMessage').innerHTML = data.message || 'Login failed. Please try again.';
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        document.getElementById('errorDiv').classList.remove('hidden');
-        document.getElementById('errorMessage').innerHTML = 'An error occurred. Please try again.';
-    });
-});
+            if (!uName || !uPass) {
+                document.getElementById('errorDiv').classList.remove('hidden');
+                document.getElementById('errorMessage').innerHTML = 'Username or Password is empty';
+                return;
+            } else if (uName.length < 2 || uPass.length < 7) {
+                document.getElementById('errorDiv').classList.remove('hidden');
+                document.getElementById('errorMessage').innerHTML = 'Username Atleast 2 and Password must be at least 7 characters long';
+                return;
+            } else {
+                loginForm.submit();
+                localStorage.setItem('growId', document.getElementById('loginGrowId').value);
+            }
+        });
 
 document.getElementById('createAccountButton').addEventListener('click', function (event) {
     event.preventDefault();
@@ -257,36 +221,14 @@ document.getElementById('createAccountButton').addEventListener('click', functio
     // Generate a random guest username
     const randomGuestName = 'Guest' + Math.floor(Math.random() * 100000);
 
-    // Prepare the data to send to the backend
-    const data = {
-        growId: randomGuestName,
-        password: 'test', // Set a default password
-        _token: '{{tokenPlaceholder}}' // Make sure to replace this with your actual token if needed
-    };
+    // Set the generated username in the input field
+    document.getElementById('loginGrowId').value = randomGuestName;
+    
+    // Leave password empty to simulate auto-account creation
+    document.getElementById('loginPassword').value = 'test'; 
 
-    // Send a POST request to the backend to create the account
-    fetch('/player/growid/login/validate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        // Handle successful account creation
-        if (data.status === "success") {
-            // Redirect to the game or handle the response accordingly
-            console.log("Account created successfully:", data);
-            // You can redirect or perform other actions here
-        } else {
-            // Handle errors
-            console.error("Error creating account:", data.message);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-    });
+    // Submit the form to log the user in with the generated username
+    document.getElementById('loginForm').submit();
 });
 
 
@@ -305,3 +247,97 @@ document.getElementById('createAccountButton').addEventListener('click', functio
     </script>
 </body>
 </html>
+
+This is my Backend i want when i click the Create in the Frontend it automatically generate User and Password value so automatic direct in the game 
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const rateLimiter = require('express-rate-limit');
+const compression = require('compression');
+
+app.use(compression({
+    level: 5,
+    threshold: 0,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    }
+}));
+app.set('view engine', 'ejs');
+app.set('trust proxy', 1);
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${res.statusCode}`);
+    next();
+});
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 100, headers: true }));
+
+// Player Login
+app.all('/player/login/dashboard', function (req, res) {
+    const tData = {};
+    try {
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
+        const uName = uData[0].split('|'); 
+        const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { 
+            const d = uData[i].split('|'); 
+            tData[d[0]] = d[1]; 
+        }
+        if (uName[1] && uPass[1]) { 
+            res.redirect('/player/growid/login/validate'); 
+        }
+    } catch (why) { 
+        console.log(`Warning: ${why}`); 
+    }
+
+    res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
+});
+
+// Auto-Login Feature
+app.all('/player/growid/login/validate', (req, res) => {
+    let growId = req.body.growId || '';  
+    const password = req.body.password || '';
+
+    // If no growId provided, create a Guest Account
+    if (!growId) {
+        growId = 'Guest' + Math.floor(10000 + Math.random() * 90000);
+        console.log(`Auto-Generated Guest Account: ${growId}`);
+    }
+
+    const _token = req.body._token || 'defaultToken';
+    const token = Buffer.from(
+        `_token=${_token}&growId=${growId}&password=${password}`,
+    ).toString('base64');
+
+    res.send({
+        status: "success",
+        message: "Account Validated.",
+        token: token,
+        url: "",
+        accountType: "growtopia",
+        username: growId 
+    });
+});
+
+// Redirect
+app.all('/player/*', function (req, res) {
+    res.status(301).redirect('https://api.yoruakio.tech/player/' + req.path.slice(8));
+});
+
+// Home
+app.get('/', function (req, res) {
+    res.send('Hello World!');
+});
+
+// Server Start
+app.listen(5000, function () {
+    console.log('Listening on port 5000');
+});
