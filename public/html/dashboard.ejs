@@ -1,58 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="background-color: rgba(0,0,0,0.0); width:100%; height: 100%;">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growtopia - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Growtopia Player Support</title>
+    <link rel="icon" type="image/png" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" sizes="16x16" />
+    <link rel="shortcut icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" type="image/x-icon">
+    <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" type="image/x-icon">
+    <link media="all" rel="stylesheet" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/faq-main.css">
+    <link media="all" rel="stylesheet" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/shop-custom.css">
+    <link media="all" rel="stylesheet" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/css/ingame-custom.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .modal-backdrop {
+            display: none !important;
+        }
+
+        .modal {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .modal.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show.fade {
+            pointer-events: none;
+        }
+
+        .modal-dialog {
+            pointer-events: all;
+        }
+
+        .modal-body, .content {
+            padding: 0;
+        }
+
+        .product-list-popup .modal-content {
+            border: 6px solid #000000;
+            background-color: rgba(0, 0, 0, 0.0);
+            color: #FFF;
+            background-image: url('./images/main_menu_bg_themed.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .grow-button {
+            border-radius: 5px;
+            border: 2px solid #cbc488 !important;
+            background: #ffe600 !important;
+            text-transform: none;
+            color: #FFF;
+            text-align: center;
+            text-shadow: 1px 1px 1px #000;
+            font-weight: 700;
+            line-height: normal;
+            width: 100%;
+            box-shadow: 1px 3px 0.1px 0px #000;
+        }
+
+        .promo-link {
+            color: #fff;
+            text-align: center;
+            text-shadow: 1px 1px 1px #000;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .promo-a {
+            color: #0cfa14;
+        }
+
+        a:focus, a:hover {
+            color: #00ff59;
+            text-decoration: underline;
+        }
+
+        #errorDiv {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #fff;
+            background: none;
+            border: none;
+        }
+
+        .form-group {
+            position: relative;
+        }
+        
+        .create-text {
+            color: #d1ffa1;
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 1px #000;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body class="flex flex-col items-center justify-center h-screen bg-[#e0f7fa]">
-    <div class="fixed inset-0 flex items-center justify-center">
-        <div class="relative bg-[#2b4d6d] border-4 border-[#87b8cc] shadow-lg p-6 w-80 rounded-lg">
-            <p class="text-white text-center font-bold text-2xl">Login</p>
-            <div id="errorDiv" class="hidden flex flex-col mt-2 text-xs text-red-700 font-bold px-[5px] bg-[#2b4d6d] rounded">
-                <a id="errorMessage"></a>
+<body style="background-color: rgba(0,0,0,0.0);">
+    <button type="button" class="btn btn-primary hidden" data-toggle="modal" id="modalButton" data-target="#modalShow" data-backdrop="static" data-keyboard="false"></button>
+    <div class="content">
+        <section class="common-box">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="modal fade product-list-popup" id="modalShow" tabindex="-1" role="dialog" aria-hidden="false" data-backdrop="static" data-keyboard="false">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <div class="content">
+                                                <section class="common-box">
+                                                    <div class="container">
+                                                        <div class="section-title center-align">
+                                                            <h2>Log in with your Magical-ID</h2>
+                                                        </div>
+                                                        <div id="errorDiv" class="hidden" style="background-color: #ff000033; color: #ff0000;">
+                                                            <span id="errorMessage"></span>
+                                                        </div>
+                                                        <div class="row div-content-center">
+                                                            <div class="col-md-12 col-sm-12">
+                                                                <form method="POST" action="/player/growid/login/validate" accept-charset="UTF-8" role="form" id="loginForm" autocomplete="off">
+                                                                    <input name="type" value="log" type="hidden">
+                                                                    <input name="_token" type="hidden" value="{{tokenPlaceholder}}">
+                                                                    <div class="form-group">
+                                                                        <input id="loginGrowId" class="form-control grow-text" placeholder="Your MagicalPS Name" name="growId" type="text">
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <input id="loginPassword" class="form-control grow-text" placeholder="Your MagicalPS Password" name="password" type="password">
+                                                                       
+                                                                    </div>
+                                                                    <div class="form-group text-center">
+                                                                        <div class="create-text">Create? Enter Name without Password & Log in!</div>
+                                                                    </div>
+                                                                    <div class="form-group text-center promo-link">
+                                                                        <a class="promo-a" href="https://discord.gg/6kBd2b2Rx8" target="_blank">Need Help? Join our Discord! (Click Me!)</a>
+                                                                    </div>
+<button id="loginButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">Log in</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <form 
-            method="post"
-            action="/player/growid/login/validate"
-            accept-charset="UTF-8"
-            id="loginForm" class="mt-3">
-                <div class="mb-1">
-                    <input name="type" value="log" type="hidden" />
-                    <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
-                    <label for="loginGrowId" class="block text-white text-xs">GrowID</label>
-                    <div class="flex items-center border-2 border-[#81d4fa] rounded bg-[#2b4d6d] px-1 py-1">
-                        <i class="fas fa-user text-white mr-1 text-xs"></i>
-                        <input type="text" name="growId" id="loginGrowId" class="w-full bg-[#2b4d6d] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your growid">
-                    </div>
-                </div>
-                <div class="mb-1">
-                    <label for="loginPassword" class="block text-white text-xs">Password</label>
-                    <div class="flex items-center border-2 border-[#81d4fa] rounded bg-[#2b4d6d] px-1 py-1">
-                        <i class="fas fa-lock text-white mr-1 text-xs"></i>
-                        <input type="password" name="password" id="loginPassword" class="w-full bg-[#2b4d6d] text-white text-xs placeholder-white focus:outline-none" placeholder="Enter your password">
-                        <button type="button" id="toggleLogPassword" class="text-white ml-2 focus:outline-none text-xs">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="flex justify-end items-center">
-                    <button id="loginButton" class="px-2 py-1 rounded bg-[#00b8ff] text-white text-xs hover:bg-[#06a4dd] transition duration-300 ease-in-out transform hover:scale-105">Login</button>
-                </div>
-            </form>
-        </div>
+        </section>
     </div>
+
+    <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/jquery/jquery-2.1.4.min.js"></script>
+    <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/bootstrap/javascripts/bootstrap.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (localStorage.getItem('growId')) {
                 document.getElementById('loginGrowId').value = localStorage.getItem('growId');
             }
 
-            const loginGrowId = document.getElementById('loginGrowId').value
-            const loginPassword = document.getElementById('loginPassword').value
+            const loginGrowId = document.getElementById('loginGrowId').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+
+            $('#modalShow').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            $('#modalShow').on('hide.bs.modal', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
         });
+
         document.getElementById('loginButton').addEventListener('click', function (event) {
             event.preventDefault();
 
@@ -72,9 +212,10 @@
                 loginForm.submit();
                 localStorage.setItem('growId', document.getElementById('loginGrowId').value);
             }
-        })
+        });
+
         document.getElementById('toggleLogPassword').addEventListener('click', function () {
-            const LpasswordField = document.getElementById('loginPassword')
+            const LpasswordField = document.getElementById('loginPassword');
             const LpasswordFieldType = LpasswordField.getAttribute('type');
             if (LpasswordFieldType === 'password') {
                 LpasswordField.setAttribute('type', 'text');
