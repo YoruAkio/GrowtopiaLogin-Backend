@@ -50,8 +50,8 @@ app.all('/player/login/dashboard', function (req, res) {
     res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
 
-// Auto-Login Feature
 app.all('/player/growid/login/validate', (req, res) => {
+    // Parse JSON data
     let growId = req.body.growId || '';  
     const password = req.body.password || '';
 
