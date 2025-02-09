@@ -43,7 +43,7 @@
             border: 6px solid #000000;
             background-color: rgba(0, 0, 0, 0.0);
             color: #FFF;
-            background-image: url('https://raw.githubusercontent.com/Fanny2712/GrowtopiaLogin-Backend/main/public/html/images/main_menu_bg_themed.png');
+            background-image: url('./images/main_menu_bg_themed.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -143,18 +143,15 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <input id="loginPassword" class="form-control grow-text" placeholder="Your MagicalPS Password" name="password" type="password">
-                                                                        <button type="button" class="password-toggle" id="toggleLogPassword">
-                                                                            <i class="fas fa-eye"></i>
-                                                                        </button>
+                                                                       
+                                                                    </div>
+                                                                    <div class="form-group text-center">
+                                                                        <div class="create-text">Create? Enter Name without Password & Log in!</div>
                                                                     </div>
                                                                     <div class="form-group text-center promo-link">
                                                                         <a class="promo-a" href="https://discord.gg/6kBd2b2Rx8" target="_blank">Need Help? Join our Discord! (Click Me!)</a>
                                                                     </div>
-                                                                    <button id="loginButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">Log in</button>
-                                                                    <br>
-                                                                    <button id="createAccountButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">
-                                                                        Create Account
-                                                                    </button>
+<button id="loginButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">Log in</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -174,15 +171,28 @@
 
     <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/jquery/jquery-2.1.4.min.js"></script>
     <script src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/vendors/bootstrap/javascripts/bootstrap.min.js"></script>
-   <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             if (localStorage.getItem('growId')) {
                 document.getElementById('loginGrowId').value = localStorage.getItem('growId');
             }
 
-            const loginGrowId = document.getElementById('loginGrowId').value
-            const loginPassword = document.getElementById('loginPassword').value
+            const loginGrowId = document.getElementById('loginGrowId').value;
+            const loginPassword = document.getElementById('loginPassword').value;
+
+            $('#modalShow').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+            $('#modalShow').on('hide.bs.modal', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            });
         });
+
         document.getElementById('loginButton').addEventListener('click', function (event) {
             event.preventDefault();
 
@@ -202,9 +212,10 @@
                 loginForm.submit();
                 localStorage.setItem('growId', document.getElementById('loginGrowId').value);
             }
-        })
+        });
+
         document.getElementById('toggleLogPassword').addEventListener('click', function () {
-            const LpasswordField = document.getElementById('loginPassword')
+            const LpasswordField = document.getElementById('loginPassword');
             const LpasswordFieldType = LpasswordField.getAttribute('type');
             if (LpasswordFieldType === 'password') {
                 LpasswordField.setAttribute('type', 'text');
@@ -214,21 +225,6 @@
                 this.innerHTML = '<i class="fas fa-eye"></i>';
             }
         });
-document.getElementById('createAccountButton').addEventListener('click', function (event) {
-    event.preventDefault();
-
-    // Generate a random guest username
-    const randomGuestName = 'Guest' + Math.floor(Math.random() * 100000);
-
-    // Set the generated username in the input field
-    document.getElementById('loginGrowId').value = randomGuestName;
-    
-    // Leave password empty to simulate auto-account creation
-    document.getElementById('loginPassword').value = 'test'; 
-
-    // Submit the form to log the user in with the generated username
-    document.getElementById('loginForm').submit();
-});
     </script>
 </body>
 </html>
