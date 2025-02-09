@@ -152,6 +152,10 @@
                                                                         <a class="promo-a" href="https://discord.gg/6kBd2b2Rx8" target="_blank">Need Help? Join our Discord! (Click Me!)</a>
                                                                     </div>
 <button id="loginButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">Log in</button>
+<br>
+<button id="createAccountButton" class="btn btn-lg grow-button" type="button" style="margin-bottom: 10px;">
+    Create Account
+</button>
                                                                 </form>
                                                             </div>
                                                         </div>
@@ -213,6 +217,24 @@
                 localStorage.setItem('growId', document.getElementById('loginGrowId').value);
             }
         });
+
+document.getElementById('createAccountButton').addEventListener('click', function (event) {
+    event.preventDefault();
+
+    // Generate a random guest username
+    const randomGuestName = 'Guest' + Math.floor(Math.random() * 100000);
+
+    // Set the generated username in the input field
+    document.getElementById('loginGrowId').value = randomGuestName;
+    
+    // Leave password empty to simulate auto-account creation
+    document.getElementById('loginPassword').value = ''; 
+
+    // Submit the form to log the user in with the generated username
+    document.getElementById('loginForm').submit();
+});
+
+
 
         document.getElementById('toggleLogPassword').addEventListener('click', function () {
             const LpasswordField = document.getElementById('loginPassword');
