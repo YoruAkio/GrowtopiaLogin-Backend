@@ -72,7 +72,7 @@ const app = new Elysia()
       const password = formData.password;
 
       const token = Buffer.from(
-        `_token=${_token}&growId=${growId}&password=${password}`,
+        `_token=${_token}&growId=${growId}&password=${password}&reg=0`,
       ).toString('base64');
 
       return new Response(
@@ -149,6 +149,6 @@ const app = new Elysia()
         },
       );
     }
-  });
+  }).listen(3000);
 
 export default app;
