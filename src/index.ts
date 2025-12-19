@@ -140,8 +140,8 @@ const app = new Elysia()
     }
   });
 
-app.listen(5000);
-
 console.log(
   `🦊 GTLogin is running at ${app.server?.hostname}:${app.server?.port}`,
 );
+
+export default app;
