@@ -1,12 +1,16 @@
 {
-  "name": "login-be-elysiajs",
+  "name": "gtlogin",
   "version": "1.0.50",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/cors": "^1.4.0",
+    "@elysiajs/static": "^1.4.7",
+    "elysia": "latest",
+    "elysia-ip": "^1.0.10",
+    "elysia-rate-limit": "^4.4.2"
   },
   "devDependencies": {
     "bun-types": "latest"
