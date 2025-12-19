@@ -3,6 +3,7 @@ import cors from '@elysiajs/cors';
 import { ip } from 'elysia-ip';
 import { rateLimit } from 'elysia-rate-limit';
 import staticPlugin from '@elysiajs/static';
+import path from 'path';
 
 const app = new Elysia()
   .use(ip({ checkHeaders: ['X-Forwarded-For', 'X-Real-IP'] }))
@@ -13,7 +14,9 @@ const app = new Elysia()
 
     console.log(`[REQ] ${request.method} ${url.pathname} → ${clientIp}`);
   })
-  .use(staticPlugin({ prefix: '/' }))
+  .use(
+    staticPlugin({ prefix: '/', assets: path.join(process.cwd(), 'public') }),
+  )
   .use(rateLimit({ duration: 60_000, max: 50 }))
   .use(cors())
   .get('/', () => `Hello, world!`)
@@ -44,7 +47,15 @@ const app = new Elysia()
     const tDataBase64 = Buffer.from(JSON.stringify(tData)).toString('base64');
 
     // @note read dashboard template and replace placeholder
-    const templateFile = Bun.file('./src/template/dashboard.html');
+
+    const templatePath = path.join(
+      process.cwd(),
+      'src',
+      'template',
+      'dashboard.html',
+    );
+
+    const templateFile = Bun.file(templatePath);
     const templateContent = await templateFile.text();
     const htmlContent = templateContent.replace('{{ data }}', tDataBase64);
 
@@ -139,9 +150,5 @@ const app = new Elysia()
       );
     }
   });
-
-console.log(
-  `🦊 GTLogin is running at ${app.server?.hostname}:${app.server?.port}`,
-);
 
 export default app;
