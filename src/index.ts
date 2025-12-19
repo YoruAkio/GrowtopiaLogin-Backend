@@ -13,7 +13,7 @@ const app = new Elysia()
 
     console.log(`[REQ] ${request.method} ${url.pathname} → ${clientIp}`);
   })
-  .use(staticPlugin({ prefix: '/'}))
+  .use(staticPlugin({ prefix: '/' }))
   .use(rateLimit({ duration: 60_000, max: 50 }))
   .use(cors())
   .get('/', () => `Hello, world!`)
@@ -25,7 +25,7 @@ const app = new Elysia()
       try {
         const bodyStr = JSON.stringify(body);
         const parts = bodyStr.split('"');
-        
+
         if (parts.length > 1) {
           const uData = parts[1].split('\\n');
           for (let i = 0; i < uData.length - 1; i++) {
@@ -138,11 +138,10 @@ const app = new Elysia()
         },
       );
     }
-  })
-  .listen(5000);
+  });
+
+app.listen(5000);
 
 console.log(
   `🦊 GTLogin is running at ${app.server?.hostname}:${app.server?.port}`,
 );
-
-export default app;
