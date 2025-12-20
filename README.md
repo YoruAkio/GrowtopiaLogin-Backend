@@ -107,9 +107,29 @@ bun install
 
 ## Development
 
+Run the development server locally:
+
 ```bash
 bun run dev
 ```
+
+## Deployment
+
+Deploy the application to Vercel:
+
+1. **Fork the repository** - Click the "Fork" button on the top right of this repository page
+2. **Login to Vercel** - Go to [Vercel](https://vercel.com) and login or register using your GitHub account (recommended)
+3. **Create new project**:
+   - Click the "New" button on the top right of your team project page
+   - Select "Project"
+   - Import your Git repository by selecting the forked repository
+   - Click "Import"
+4. **Configure and deploy**:
+   - Check the Framework Preset setting
+   - If the framework preset is not set to "Elysia", select "Elysia" from the dropdown
+   - Click "Deploy"
+   - Wait for the deployment to complete
+
 
 ## Contact
 
